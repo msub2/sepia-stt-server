@@ -11,7 +11,7 @@ from server import app
 # Parse commandline arguments and create the settings instance
 from launch_setup import settings
 config = Config()
-config.bind = [settings.host]
+config.bind = [f'{settings.host}:{settings.port}']
 config.loglevel = settings.log_level
 config.use_reloader = settings.code_reload
 
