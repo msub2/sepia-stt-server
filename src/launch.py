@@ -2,19 +2,23 @@
 More info: https://www.uvicorn.org/deployment/
 """
 
-import uvicorn
+import asyncio
+from hypercorn.asyncio import serve
+from hypercorn.config import Config
+from server import app
+
 
 # Parse commandline arguments and create the settings instance
 from launch_setup import settings
+config = Config()
+config.bind([settings.host])
+config.loglevel = settings.log_level
+config.use_reloader = settings.code_reload
 
 def main():
     """Main method to start server"""
+    asyncio.run(serve(app, config))
     print("SEPIA STT Server - Starting...")
-    uvicorn.run("server:app",
-        host=settings.host,
-        port=settings.port,
-        log_level=settings.log_level,
-        reload=settings.code_reload)
 
 # Run if this is called as main
 if __name__ == "__main__":
