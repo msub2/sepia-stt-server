@@ -50,7 +50,7 @@ class WebsocketApiEndpoint:
             while websocket.client_state == WebSocketState.CONNECTED:
                 #if websocket.application_state == WebSocketState.DISCONNECTED
                 data = await websocket.receive()
-                if "text" in data:
+                if "text" in data and data["text"] != None:
                     # JSON messages
                     try:
                         json_obj = SocketJsonInputMessage.parse_raw(data['text'])
