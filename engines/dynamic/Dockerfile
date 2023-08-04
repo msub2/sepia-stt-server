@@ -18,7 +18,7 @@ RUN echo 'Installing dependencies...' && \
 #
 #   Fast-API
     pip3 install cffi && \
-    pip3 install fastapi uvicorn[standard] aiofiles && \
+    pip3 install fastapi hypercorn aiofiles && \
 #
 #   Clean up
     apt-get remove -y build-essential && \
@@ -99,8 +99,8 @@ RUN echo "Installing Vosk ..." && \
 	mv coqui-model-en-1.0.0 /home/admin/sepia-stt/models/coqui-model-en && \
 #
 	echo "Installing SEPIA STT ..." && \
-	SEPIA_STT_BRANCH=master && \
-	git clone --single-branch --depth 1 -b $SEPIA_STT_BRANCH https://github.com/SEPIA-Framework/sepia-stt-server.git && \
+	SEPIA_STT_BRANCH=hypercorn && \
+	git clone --single-branch --depth 1 -b $SEPIA_STT_BRANCH https://github.com/msub2/sepia-stt-server.git && \
 	mv sepia-stt-server/src /home/admin/sepia-stt/server && \
 #
 	echo "Installing Adapt-LM scripts ..." && \

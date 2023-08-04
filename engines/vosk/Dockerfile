@@ -2,22 +2,31 @@ FROM debian:buster-slim
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Run 1
 RUN echo 'Installing dependencies...' && \
 #
-#   Dependencies
+#		Rustup
     apt-get update && \
+		apt-get install -y --no-install-recommends \
+		build-essential ca-certificates \
+		wget curl && \
+		curl -k https://sh.rustup.rs -sSf | sh -s -- -y && \
+		apt-get update && \
+		echo 'source $HOME/.cargo/env' >> $HOME/.bashrc && \
+#
+#   Dependencies
     apt-get install -y --no-install-recommends \
-    sudo git wget curl nano unzip zip procps \
-    build-essential \
+    sudo git nano unzip zip procps \
     python3-pip python3-dev python3-setuptools python3-wheel \
     #amd64 only? moved to adapt package: libatlas-base-dev \
     libffi-dev && \
 #
 #   Fast-API
+		pip3 install --upgrade pip && \
     pip3 install cffi && \
-    pip3 install fastapi hypercorn aiofiles && \
+    pip3 install fastapi hypercorn aiofiles numpy && \
 #
 #   Clean up
     apt-get remove -y build-essential && \
@@ -89,7 +98,7 @@ RUN echo "Installing Vosk ..." && \
 #
 # TODO: install proxy with self-signed certs?
 #
-	echo "#!/bin/bash" > on-docker.sh && echo "cd sepia-stt/server && python3 -m launch" >> on-docker.sh
+	echo "#!/bin/bash" > on-docker.sh && echo "cd sepia-stt/server && python3 -m launch --settings=server-vosk.conf" >> on-docker.sh
 	
 # Start
 WORKDIR /home/admin
