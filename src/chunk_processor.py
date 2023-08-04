@@ -3,7 +3,7 @@
 import time
 from functools import partial
 from starlette.concurrency import run_in_threadpool
-from uvicorn.config import logger
+#from uvicorn.config import logger
 
 from launch_setup import settings
 from socket_messages import (SocketJsonInputMessage, SocketResponseMessage, SocketErrorMessage)
@@ -123,9 +123,9 @@ class WaveFileWriter(EngineInterface):
                 f"{settings.recordings_path}{WaveFileWriter.file_index}-{int(time.time())}.wav"
             )
             self._file = open(self._file_name, 'wb')
-            logger.info("WaveFileWriter - Created file: %s", self._file_name)
+            #logger.info("WaveFileWriter - Created file: %s", self._file_name)
         except OSError:
-            logger.exception("WaveFileWriter - Failed to create file")
+            #logger.exception("WaveFileWriter - Failed to create file")
             self.on_error("Engine: wave_file_writer - Message: Failed to create file")
 
     async def process(self, chunk: bytes):
@@ -133,7 +133,7 @@ class WaveFileWriter(EngineInterface):
         try:
             self._file.write(chunk)
         except OSError:
-            logger.exception("WaveFileWriter - Failed to process")
+            #logger.exception("WaveFileWriter - Failed to process")
             self.on_error("Engine: wave_file_writer - Message: Failed to process")
 
     async def finish_processing(self):
@@ -155,9 +155,9 @@ class WaveFileWriter(EngineInterface):
         try:
             if self._file is not None and not self._file.closed:
                 self._file.close()
-                logger.info("WaveFileWriter - File closed: %s", self._file_name)
+                #logger.info("WaveFileWriter - File closed: %s", self._file_name)
         except OSError:
-            logger.exception("WaveFileWriter - Failed to close file")
+            #logger.exception("WaveFileWriter - Failed to close file")
             self.on_error("Engine: wave_file_writer - Message: Failed to close")
 
 #--- TEST ---

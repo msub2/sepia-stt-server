@@ -3,7 +3,7 @@
 import time
 import asyncio
 
-from uvicorn.config import logger
+#from hypercorn.config import logger
 from fastapi import WebSocket
 from starlette.websockets import WebSocketState
 
@@ -64,23 +64,23 @@ class SocketUser:
                 self.processor = ChunkProcessor(engine_name=engine_name,
                     send_message=self.send_message, options=processor_options)
             except EngineNotFound:
-                logger.exception("ChunkProcessor - Engine not found")
+                #logger.exception("ChunkProcessor - Engine not found")
                 await self.send_message(SocketErrorMessage(500,
                     "ChunkProcessorError",
                     "Failed to create processor: EngineNotFound"))
             except ModelNotFound:
-                logger.exception("ChunkProcessor - ASR model not found")
+                #logger.exception("ChunkProcessor - ASR model not found")
                 await self.send_message(SocketErrorMessage(500,
                     "ChunkProcessorError",
                     "Failed to create processor: ModelNotFound"))
             except RuntimeError as err:
-                logger.exception("ChunkProcessor - Failed to create processor")
-                logger.exception("ChunkProcessorError: %s", err)
+                #logger.exception("ChunkProcessor - Failed to create processor")
+                #logger.exception("ChunkProcessorError: %s", err)
                 await self.send_message(SocketErrorMessage(500,
                     "ChunkProcessorError",
                     f"Failed to create processor: {str(err)}"))
         else:
-            logger.warning("User %s failed to authenticate!", client_id)
+            #logger.warning("User %s failed to authenticate!", client_id)
             await asyncio.sleep(3)
 
     async def send_message(self, message: SocketMessage):
